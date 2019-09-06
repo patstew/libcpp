@@ -14,6 +14,8 @@ The builds are highly configurable, allowing you to create a libc++ and libc++ab
     1. [Requirements](#Requirements)
     1. [Getting the Source](#getting-the-source)
     1. [Building](#building)
+        1. [Cross-compiling](#cross-compiling)
+        2. [Using an Alternate Toolchain](#using-an-alternate-toolchain)
     1. [Usage](#installation)
 1. [Configuration Options](#configuration-options)
 1. [Versioning](#versioning)
@@ -165,6 +167,28 @@ meson buildresults --cross-file build/cross/gcc/arm/gcc_arm_cortex-m4.txt -Dlibc
 ```
 
 Note that if you are cross-compiling for ARM using the arm-none-eabi-gcc toolchain, you will need to use **version 9.0 or later**. If you cannot get this version for your platform due to package availability, you can build the most recent compiler version using the [arm-gcc-bleeding-edge](https://github.com/embeddedartistry/arm-gcc-bleeding-edge) project.
+
+#### Using an Alternate Toolchain
+
+Meson is going to build with a default toolchain on your system. Some developers will have multiple toolchains installed, such as GCC and clang.
+
+You can use the alternate toolchain through one of two approaches: 
+
+1. Creating a cross file which points to the alternate toolchain (works even if you're targeting the same architecture)
+2. Using the standard GNU make environment variables on when invoking meson.
+
+As an example of number two, you can say:
+
+```
+CC=/usr/local/opt/gcc/bin/gcc-9 CXX=/usr/local/opt/gcc/bin/g++-9 AR=/usr/local/opt/gcc/bin/gcc-ar-9 meson buildresults
+```
+
+For a full list of implicit variables, [check out the Make manual](https://www.gnu.org/software/make/manual/html_node/Implicit-Variables.html).
+
+* AR - Archive-maintaining program; default ‘ar’.
+* AS - Program for compiling assembly files; default ‘as’.
+* CC - Program for compiling C programs; default ‘cc’.
+* CXX - Program for compiling C++ programs; default ‘g++’.
 
 ### Usage
 
